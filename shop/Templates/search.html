@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Search Results for {{ searched }}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">We found {{ number }} items containing {{ searched }}</h1>
+
+    <div class="item-box">
+        {% for match in matches %}
+        <img src="{{match.image}}" alt="{{match.name}}" class="image">
+        <h3 class="title">{{match.name}}</h3>
+        <h3 class="title">${{match.price}}</h3>
+        <h3 class="title">{{match.stock}} units available.</h3>
+        <form action="{% url 'add_to_cart' match.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+        </form>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock content %}

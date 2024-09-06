@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Log In
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <p><h2>Login</h2></p>
+    <style>
+        h3 {
+            color: red;
+        }
+    </style>
+    
+    {% for message in messages %}
+        <h3>{{message}}</h3>
+        {% endfor %}
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="container-lg">
+            <label>Username:</label>
+            <br> <br> 
+            <input type="text" name="username" />
+        </div> <br>
+
+        <div class="container-lg">
+            <label>Password: </label>
+            <br> <br>
+            <input type="password" name="password" />
+        </div> <br>
+
+        <p>
+        <input type="submit" class = "btn btn-primary" value="Log in"/> <br> <br>
+            If you do not have an account, consider signing up here. <br>  <br>
+        <a href="/signup"><input type="button" class = "btn btn-primary" value="Sign Up!"></a>
+        </p>
+</div>   
+{% endblock content %}

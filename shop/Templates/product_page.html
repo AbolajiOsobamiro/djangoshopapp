@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+{{ product.name }}
+{% endblock title %}
+
+
+{% block content %}
+
+        <div class="image_half">
+            <img src="{{ product.image }}" class="page_image" alt="{{ product.name }}">
+        </div>
+
+        <div class="info_half">
+            Posted By: {{ product.trader_name.username }}
+            Trader Rating: {{ product.trader_name.average_rating}}/10
+            Name: {{ product.name }}
+            Price: {{ product.price }}
+            Description: {{ product.description }}
+            Amount Available: {{ product.stock }}
+            <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class = "btn btn-primary">Add to Cart</button>
+            </form>
+        </div>
+
+
+        <div class="container-lg">
+            <h2 class="text-center mb-4">Write a review about this product!</h2>
+            <form action="{% url 'submit_review' product.id %}" method="POST">
+                {% csrf_token %}
+                <textarea name="review" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+                <button type="submit" class = "btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+
+
+{% endblock content %}

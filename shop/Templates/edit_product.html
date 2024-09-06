@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Edit {{ product.name }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Edit {{ product.name }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        
+        <!-- Name Field -->
+        <div class="container-lg">
+            <label for="id_name" class="title">Name:</label>
+            <input type="text" id="id_name" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:'' }}" class="form-control" placeholder="Product Name">
+            {% if form.name.errors %}
+                <div class="error">{{ form.name.errors }}</div>
+            {% endif %}
+        </div>
+
+        
+        <div class="container-lg">
+            <label for="id_description">Description:</label>
+            <textarea id="id_description" name="{{ form.description.name }}" class="form-control" placeholder="Product Description">{{ form.description.value|default_if_none:'' }}</textarea>
+            {% if form.description.errors %}
+                <div class="error">{{ form.description.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Price Field -->
+        <div class="container-lg">
+            <label for="id_price">Price:</label>
+            <input type="number" id="id_price" name="{{ form.price.name }}" value="{{ form.price.value|default_if_none:'' }}" class="form-control" placeholder="Product Price">
+            {% if form.price.errors %}
+                <div class="error">{{ form.price.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="container-lg">
+            <label for="id_stock">Stock:</label>
+            <input type="number" id="id_stock" name="{{ form.stock.name }}" value="{{ form.stock.value|default_if_none:'' }}" class="form-control" placeholder="Amount Available">
+            {% if form.stock.errors %}
+                <div class="error">{{ form.stock.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Category Field -->
+        <div class="container-lg">
+            <label for="id_category">Category:</label>
+            <select id="id_category" name="{{ form.category.name }}" class="form-control">
+                {% for choice in form.category.field.choices %}
+                    <option value="{{ choice.0 }}" {% if form.category.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+            {% if form.category.errors %}
+                <div class="error">{{ form.category.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Image Field -->
+        <div class="container-lg">
+            <label for="id_image">Image:</label>
+            <input type="file" id="id_image" name="{{ form.image.name }}" class="form-control-file">
+            {% if form.image.errors %}
+                <div class="error">{{ form.image.errors }}</div>
+            {% endif %}
+        </div>
+
+        <p align='center'>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        </p>
+    </form>
+{% endblock content %}

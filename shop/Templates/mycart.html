@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    My Cart
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">My Cart</h1>
+    {% for items in cart_items %}
+        {{ item.product.name }}
+        {{ item.product.price }}
+         {{ item.quantity }}
+         {{ total1 }}
+        
+        {% empty %}
+        <h3>Your cart is empty.<h3>
+    {% endfor %}
+    {{ total2 }}
+    <button class = "btn btn-primary" onclick ="makePayment()"> Pay Now </button>
+</div>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script >
+
+<script>
+    function makePayment(){
+        FlutterwaveCheckout({
+        public_key : "FLWPUBK_TEST-6e0365caa562fd4f0d9020506c354d62-X" ,
+        tx_ref : "titanic-48981487343MDI0NzMx" ,
+        amount : {{ total2 }} ,
+        currency : "USD" ,
+        payment_options : "card, mobilemoneyghana, ussd" ,
+        redirect_url : "http://127.0.0.1:8000/confirm_payment/"+ {{ cart.id }} ,
+        meta : {
+        consumer_id : 23 ,
+        consumer_mac : "92a3-912ba-1192a" ,
+        },
+        customer : {
+        email : {{ user.email }} ,
+        phone_number : {{ user.phonenumber }} ,
+        name : {{ user.username }} ,
+        },
+        customizations : {
+        title : "The Titanic Store" ,
+        description : "Payment for an awesome cruise" , 
+        logo : "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+        }
+        });
+        }
+</script>
+
+{% endblock content %}

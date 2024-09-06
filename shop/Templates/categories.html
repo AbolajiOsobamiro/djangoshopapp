@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Categories
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">These are the categories of products we have to offer</h1>
+    {% for category in categories %}
+    <div class="item-box">
+        <a href="/{{ category.slug }}/">
+            {% if category.name == 'Appliances' %}
+            <img src="static/appliances.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Baby Products' %}
+            <img src="static/babyproducts.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Phones and Tablets' %}
+            <img src="static/phonesandtablets.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Health and Beauty' %}
+            <img src="static/healthandbeauty.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Home and Office' %}
+            <img src="static/homeandoffice.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Electronics' %}
+            <img src="static/electronics.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Fashion' %}
+            <img src="static/fashion.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Supermarket' %}
+            <img src="static/supermarket.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Computing' %}
+            <img src="static/computing.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Gaming' %}
+            <img src="static/gaming.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Musical Instruments' %}
+            <img src="static/musicalinstruments.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Toys and Games' %}
+            <img src="static/toysandgames.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Sporting Goods' %}
+            <img src="static/sportinggoods.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Books, Music and Movies' %}
+            <img src="static/booksmusicandmovies.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Pet Supplies' %}
+            <img src="static/petsupplies.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Industrial and Scientific' %}
+            <img src="static/industrialandscientific.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Garden and Outdoors' %}
+            <img src="static/gardenandoutdoors.png" alt="{{category.name}}" class="image">
+            {% elif category.name == 'Others' %}
+            <img src="static/cart.jpeg" alt="{{category.name}}" class="image">
+            {% endif %}
+            <h3 class="title">{{category.name}}</h3>
+        </a>
+    </div>
+
+    {% endfor %}
+
+</div>
+{% endblock content %}

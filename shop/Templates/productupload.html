@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Post Products
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Post your Products here!</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="container-lg">
+        <label for="category" >Select the item's category</label>
+        <select name="category" class="form-control" id="">
+            <option value="Appliances" selected="selected">Appliances</option>
+            <option value="Phones and Tablets">Phones and Tablets</option>
+            <option value="Health and Beauty">Health and Beauty</option>
+            <option value="Home and Office">Home and Office</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Supermarket">Supermarket</option>
+            <option value="Computing">Computing</option>
+            <option value="Baby Products">Baby Products</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Musical Instruments">Musical Instruments</option>
+            <option value="Toys and Games">Toys and Games</option>
+            <option value="Sporting Goods">Sporting Goods</option>
+            <option value="Books, Music and Movies">Books, Music and Movies</option>
+            <option value="Pet Supplies">Pet Supplies</option>
+            <option value="Industrial and Scientific">Industrial and Scientific</option>
+            <option value="Garden and Outdoors">Garden and Outdoors</option>
+            <option value="Others">Others</option>
+        </select>
+    </div>
+
+    <div class="container-lg">
+        <label class="">Product Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Enter product name here">
+    </div>
+
+    <div class="container-lg">
+            <label class="">Description</label>
+            <textarea name="description" class="form-control" cols="30" rows="10"></textarea>
+    </div>
+
+    <div class="container-lg">
+            <label for="price" class="">Price</label>
+            <input type="number" class="form-control" name="price" id="">
+    </div>
+
+    <div class="container-lg">
+            <label for="stock" class="">Amount Available</label>
+            <input type="number" class="form-control" name="stock" id="">
+    </div>
+
+    <div class="container-lg">
+        <label for="image">Image</label>
+        <input type="file" class="form-control" name="image" id="">
+    </div>
+    <br>
+
+    <p>
+        <button type="submit" value="Post Item" class="btn btn-primary">Post Item</button>
+    </p>
+        
+    </form>
+
+</div>
+{% endblock content %}

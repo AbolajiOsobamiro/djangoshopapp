@@ -1,0 +1,75 @@
+.item-box {
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 15px;
+    text-align: center;
+    max-width: 250px;
+    display: inline-block;
+    background-color: #f4f4f4;
+}
+
+.item-box .image {
+    max-width: 80%;
+    max-height: auto;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.item-box .title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333333;
+}
+
+.item-box .add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px ;
+}
+
+.signup {
+    text-align: center;
+}
+
+.signup .heading {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 15px;
+    color: #555555;
+    font-size: 35px;
+}
+
+.signup .title {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #888888;
+}
+
+.signup .text-box {
+    height: 35px;
+    width: 500px;
+    border-radius: 10px;
+}
+
+.signup .signup-button {
+    background-color: #FF9800;
+    color: white;
+    padding: 8px 30px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px ;
+}
+
+.signup .remark {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #888888;
+}
+

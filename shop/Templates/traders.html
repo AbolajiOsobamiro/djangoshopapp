@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ trader.username }}'s Products
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Products by {{ trader.username }}</h1>
+
+    {% if products %}
+            {% for product in products %}
+                <div class="image_half">
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                </div>
+
+                <div class="info_half">
+                    <h2>Name: {{ product.name }}</h2>
+                    <p>Price: ${{ product.price }}</p>
+                    <p>Amount Available: {{ product.stock }}</p>
+                    {% if request.user_type == 'Trader' %}
+                        <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a>
+                    {% endif %}
+                </div>
+
+            {% endfor %}
+    {% else %}
+            
+        <h1 class="text-center mb-4">
+            {{ trader.username }} has not posted any products yet.
+        </h1>
+
+    {% endif %}
+    
+</div>
+   
+{% endblock content %}

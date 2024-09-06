@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Dis Shop
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5">
+            
+                <h2>Shop by Category</h2>
+                {% for category in categories %}
+                    <div class="item-box">
+                        <a href="/category/{{ category.slug }}/">
+                            <img src="static/{{ category.name }}.png" alt="{{ category.name }}">
+                            <h3>{{ category.name }}</h3>
+                        </a>
+                    </div>
+                {% endfor %}
+            
+
+
+                <h2>Featured Products</h2>
+                {% for product in featured_products %}
+                    <div class="item-box">
+                        <a href="/product/{{ product.slug }}/">
+                            <img src="static/{{ product.image }}.png" alt="{{ product.name }}">
+                            <h3>{{ product.name }}</h3>
+                            <p>Price: {{ product.price }}</p>
+                        </a>
+                        <a href="/cart/add/{{ product.id }}/" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                {% endfor %}
+
+    
+
+                <h2>New Arrivals</h2>
+                {% for product in latest_products %}
+                    <div class="item-box">
+                        <a href="/product/{{ product.slug }}/">
+                            <img src="static/{{ product.name }}.png" alt="{{ product.name }}">
+                            <h3>{{ product.name }}</h3>
+                            <p>Price: {{ product.price }}</p>
+                        </a>
+                        <a href="/cart/add/{{ product.id }}/" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                {% endfor %}
+
+
+
+            <div class=" ">
+                <p>You can contact me through the following means: <br>
+                <a href="mailto:abolajimichael2002@gmail.com"><img width="50px" height="50px" src="static/email.png" alt="email"></a> | 
+                <a href="tel:+234 907 744 4129"><img width="50px" height="50px" src="static/phone.png" alt="phone"></a>    |
+                <a href="www.facebook.com/marktwian"><img width="50px" height="50px" src='static/facebook.jpeg' alt="Facebook"></a>  |
+                <a href="www.x.com/danielfieldman"><img width="50px" height="50px" src='static/twitter.png' alt="Twitter"></a>
+                </p>
+            </div>
+
+        
+</div>
+{% endblock content %}
