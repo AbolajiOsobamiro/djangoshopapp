@@ -5,50 +5,63 @@
     My Cart
 {% endblock title %}
 
-
 {% block content %}
 <div class="container mt-5">
     <h1 class="text-center mb-4">My Cart</h1>
-    {% for items in cart_items %}
-        {{ item.product.name }}
-        {{ item.product.price }}
-         {{ item.quantity }}
-         {{ total1 }}
-        
-        {% empty %}
-        <h3>Your cart is empty.<h3>
+    
+    {% for item in cart_items %}
+        <div class="card p-3 mb-2">
+            <h5>{{ item.product.name }}</h5>
+            <p>Price: ${{ item.product.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+        </div>
+    {% empty %}
+        <h3>Your cart is empty.</h3>
     {% endfor %}
-    {{ total2 }}
-    <button class = "btn btn-primary" onclick ="makePayment()"> Pay Now </button>
+
+    <h3 class="mt-3">Total: ${{ total2 }}</h3>
+
+    <button class="btn btn-primary mt-3" onclick="makeSolanaPayment()">Pay with Solana</button>
+    
+    <div id="paymentStatus" class="mt-3"></div>
 </div>
 
-<script src="https://checkout.flutterwave.com/v3.js"></script >
-
 <script>
-    function makePayment(){
-        FlutterwaveCheckout({
-        public_key : "FLWPUBK_TEST-6e0365caa562fd4f0d9020506c354d62-X" ,
-        tx_ref : "titanic-48981487343MDI0NzMx" ,
-        amount : {{ total2 }} ,
-        currency : "USD" ,
-        payment_options : "card, mobilemoneyghana, ussd" ,
-        redirect_url : "http://127.0.0.1:8000/confirm_payment/"+ {{ cart.id }} ,
-        meta : {
-        consumer_id : 23 ,
-        consumer_mac : "92a3-912ba-1192a" ,
-        },
-        customer : {
-        email : {{ user.email }} ,
-        phone_number : {{ user.phonenumber }} ,
-        name : {{ user.username }} ,
-        },
-        customizations : {
-        title : "The Titanic Store" ,
-        description : "Payment for an awesome cruise" , 
-        logo : "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+    async function makeSolanaPayment() {
+        try {
+            let response = await fetch('/solana-pay/create/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            let result = await response.json();
+
+            if (response.ok) {
+                let paymentLink = result.payment_url;
+                let qrCode = result.qr_code;
+
+                document.getElementById('paymentStatus').innerHTML = `
+                    <div class="alert alert-success">
+                        <p>Click below to pay:</p>
+                        <a href="${paymentLink}" target="_blank" class="btn btn-primary">Open Solana Wallet</a>
+                        <p class="mt-3">Or scan this QR code:</p>
+                        <img src="data:image/png;base64,${qrCode}" class="img-fluid">
+                    </div>
+                `;
+
+                // Automatically open the Solana wallet
+                window.open(paymentLink, '_blank');
+            } else {
+                document.getElementById('paymentStatus').innerHTML = `
+                    <div class="alert alert-danger">Error: ${result.error}</div>
+                `;
+            }
+        } catch (error) {
+            document.getElementById('paymentStatus').innerHTML = `
+                <div class="alert alert-danger">Payment request failed.</div>
+            `;
         }
-        });
-        }
+    }
 </script>
 
 {% endblock content %}
