@@ -6,6 +6,13 @@ from django.contrib import messages
 from . import forms 
 from . import models
 from . import sentiment
+import urllib.parse
+import qrcode
+from io import BytesIO
+import base64
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 def index(request):
@@ -222,11 +229,51 @@ def submit_review(request, product_id):
 
         
         return redirect('product_page', product_id=product.id)
+
+
+@api_view(['POST'])
+def create_solana_payment(request):
+    """
+    Generates a Solana Pay payment link and QR code.
+    """
+    user = request.user
+    if not user.is_authenticated:
+        return Response({"error": "User not authenticated"}, status=401)
+
+    cart = get_object_or_404(models.Cart, user=user, checked_out=False)
+    total_amount = sum(item.product.price * item.quantity for item in cart.cartitems_set.all())
+
+    receiver_wallet = "Your_Solana_Wallet_Address"  # Replace with your Solana wallet address
+
+    solana_pay_url = f"solana:{receiver_wallet}?amount={total_amount}&spl-token=sol&label=Marketplace Payment"
+
+    # Generate QR Code
+    qr = qrcode.make(solana_pay_url)
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+    return Response({
+        "payment_url": solana_pay_url,
+        "qr_code": qr_base64
+    })
+
     
 
 def confirm_payment(request, pk):
-     cart = models.Cart.objects.get(id=pk)
-     cart.checked_out = True
-     cart.save()
-     messages.success(request, 'Payment made successfully')
-     return redirect('index')
+    cart = models.Cart.objects.get(id=pk, user=request.user)
+    
+    if cart.checked_out:
+        messages.error(request, 'This cart has already been checked out.')
+        return redirect('index')
+
+    response = create_solana_payment(request)
+    
+    if response.status_code == 200:
+        cart.checked_out = True
+        cart.save()
+        messages.success(request, 'Payment initiated. Please confirm in your Solana wallet.')
+    else:
+        messages.error(request, 'Payment failed. Please try again.')
+
+    return redirect('index')
