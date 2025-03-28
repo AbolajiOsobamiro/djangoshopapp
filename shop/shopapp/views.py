@@ -240,23 +240,30 @@ def create_solana_payment(request):
     if not user.is_authenticated:
         return Response({"error": "User not authenticated"}, status=401)
 
+    # Retrieve cart and calculate total amount
     cart = get_object_or_404(models.Cart, user=user, checked_out=False)
-    total_amount = sum(item.product.price * item.quantity for item in cart.cartitems_set.all())
+    total_amount = sum(item.product.price * item.quantity for item in cart.cartitems.all())
 
-    receiver_wallet = "Your_Solana_Wallet_Address"  # Replace with your Solana wallet address
+    if total_amount <= 0:
+        return Response({"error": "Invalid amount"}, status=400)
 
-    solana_pay_url = f"solana:{receiver_wallet}?amount={total_amount}&spl-token=sol&label=Marketplace Payment"
+    receiver_wallet = "8N2sV5LNeoY5QmeRiPfgyCQi1T3VALFRfDJv7XcnhDto"
+
+    # Construct Solana Pay URL (properly encoded)
+    base_url = f"solana:{receiver_wallet}?amount={total_amount}&spl-token=sol&label=Marketplace+Payment"
+    encoded_url = urllib.parse.quote(base_url, safe=":/?=&")
 
     # Generate QR Code
-    qr = qrcode.make(solana_pay_url)
+    qr = qrcode.make(encoded_url)
     buffer = BytesIO()
     qr.save(buffer, format="PNG")
     qr_base64 = base64.b64encode(buffer.getvalue()).decode()
 
     return Response({
-        "payment_url": solana_pay_url,
+        "payment_url": encoded_url,
         "qr_code": qr_base64
     })
+
 
     
 
